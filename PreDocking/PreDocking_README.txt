@@ -1,12 +1,10 @@
-PreDocking Procedures
+# A. PreDocking Procedures
 
 Part 0
-
-1. Copy the Dockatron10XD package and rename the folder after your own project.
-2. Download and install all necessary software.
+Copy the Dockatron10XD package and rename the folder after your own project.
+Download and install all necessary software.
 
 Part 1
-
 1. Move your trajectory file (.dcd) and input coordinate file (pdb) into /PreDocking/
 2. Create 'LigandPDBQTs' and 'ReceptorPDBQTs' directories in /Dockatron10XD/PreDocking/
 3. Move your Ligand PDBQT files to /Dockatron10XD/PreDocking/LigandPDBQTs/
@@ -29,12 +27,10 @@ minMax.dat		-minimum and maximum xyz coordinates of protein in each frame of tra
 rmsd.dat		-rmsd values for each frame in the trajectory
 ReceptorPDBQTs/	-containing the receptor pdb files created from running Step1A.tcl
 
-
 Part 2
-
 1. From /Dockatron10XD/PreDocking/, enter the following command into the command line:
 
-	python Step2.py --rmsd_dat 'full/path/to/rmsd.dat' --minMax_dat 'full/path/to/minMax.dat' --center_dat 'full/path/to/center.dat' --extra <integer value>
+python Step2.py --rmsd_dat 'rmsd.dat path' --minMax_dat 'minMax.dat path' --center_dat 'center.dat path' --extra <integer> --num_modes <integer> --cpu <integer> --exhaust <integer>
 
 2. Copy all .conf files to /Docking_Job/
 3. Copy all ligand pdbqt files to /Docking_Job/
