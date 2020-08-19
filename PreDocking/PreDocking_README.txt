@@ -2,18 +2,21 @@ PreDocking Procedures
 
 Part 0
 
-Copy the Dockatron10XD package and rename the folder after your own project.
-Download and install all necessary software.
+1. Copy the Dockatron10XD package and rename the folder after your own project.
+2. Download and install all necessary software.
 
 Part 1
 
-1. Move your trajectory file (.dcd) and input coordinate file (pdb) into MD_data_from_VMD
+1. Move your trajectory file (.dcd) and input coordinate file (pdb) into /PreDocking/
 2. Create 'LigandPDBQTs' and 'ReceptorPDBQTs' directories in /Dockatron10XD/PreDocking/
 3. Move your Ligand PDBQT files to /Dockatron10XD/PreDocking/LigandPDBQTs/
-4. Edit MD_data_from_VMD.tcl so the dcd filename (line 5) and the pdb filename (line 9) match your filenames.
+4. Edit PreDocking_part1.tcl 
+	- line 5 - dcd filename, first, last, step, waitfor  
+	- line 9 - pdb filename, first, last, step, waitfor
+	for more details see VMD User Guide 9.3.20 'mol': http://www.ks.uiuc.edu/Research/vmd/current/ug/node140.html 
 5. From the command line (WSL/Bash), move to /Dockatron10XD/PreDocking/ and enter the following command:
 	
-	vmd -dispdev text -eofexit < MD_data_from_VMD.tcl > MD_data_from_VMD.log
+	vmd -dispdev text -eofexit < PreDocking_part1.tcl > PreDocking_part1.log
 	
 6. From /ReceptorPDBQTs/, convert your Receptor PDB files to PDBQT files using Open Babel or AutoDockTools
 7. Move your Receptor PDB files to archive
