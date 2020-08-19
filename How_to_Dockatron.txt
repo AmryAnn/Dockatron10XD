@@ -1,0 +1,71 @@
+How To Dockatron10XD
+
+Part 0
+
+Copy the Dockatron10XD package and rename the folder after your own project.
+Download and install all necessary software.
+
+Part 1
+
+1. Move your trajectory file (.dcd) and input coordinate file (pdb) into /Dockatron10XD/Step1/
+2. Create 'LigandPDBs' and 'ReceptorPDBs' directories in /Dockatron10XD/Step1/
+3. Move your Ligand PDB files to vmd /Dockatron10XD/Step1/LigandPDBs/
+4. Edit Step1A.tcl so the dcd filename (line 5) and the pdb filename (line 9) match your filenames.
+5. From the command line (WSL/Bash), move to /Dockatron10XD/Step1/ and enter the following command:
+	
+	vmd -dispdev text -eofexit < Step1A.tcl > Step1A.log
+	
+Expected Output:
+LigandPDBs/		-containing your ligand PDB files
+Step1A.log		-VMD logging output
+center.dat		-center xyz coordinates of protein in each frame of trajectory
+minMax.dat		-minimum and maximum xyz coordinates of protein in each frame of trajectory
+rmsd.dat		-rmsd values for each frame in the trajectory
+ReceptorPDBs/	-containing the receptor pdb files created from running Step1A.tcl
+
+
+
+Part 2
+
+1. From the command line, move to /Dockatron10XD/Step2/ and enter the following command:
+
+	python Step2.py --rmsd_dat 'full/path/to/rmsd.dat' --minMax_dat 'full/path/to/minMax.dat' --center_dat 'full/path/to/center.dat' --extra <integer value>
+
+2. Move all .conf files to /Step3/Docking_Job/
+3. From Step1/LigandPDBs/ enter the following into the command line:
+
+	babel *.pdb -opdbqt -m
+
+4. Move all ligand pdbqt files to /Step2/LigandPDBQTs/
+5. From Step1/ReceptorPDBs/ enter the following into the command line:
+
+	babel *.pdb -opdbqt -m
+	
+(This step will take a few minutes)
+
+6. Move all receptor pdbqt files to /Step2/ReceptorPDBQTs/
+
+Expected Output:
+RMSD Graph				-pops up in separate window
+rand10 					-randomly selected frame numbers (printed to command line - aid in 'clustered' structure selection)
+.conf files				-configuration files for each receptor pdb
+Receptor PDBQT files 	-no torsion trees or branching
+Ligand PDBQT files		-with torsion trees and/or branching
+
+
+
+Part 3
+
+1. From the command line, move to /Step3/Docking_Job/
+2. Run docking_job.bash to set up the file structure needed to run your docking job.
+3. Move your Docking_Job to the cluster
+4. Set up a parametric sweep docking job (run multiple docking calculations in parallel)
+	https://docs.microsoft.com/en-us/previous-versions/orphan-topics/ws.10/ff919702%28v%3dws.10%29
+
+Expected Output:
+Docking_Job_In 			-contains input files and directories to allow for parametric sweep
+Docking_Job_Out
+
+
+
+Part 4

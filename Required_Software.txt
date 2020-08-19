@@ -1,0 +1,36 @@
+-- REQUIRED PROGRAMS --
+## Coming Soon : Installation tips and instructions
+
+Linux/Bash Shell -
+ WSL - 	https://docs.microsoft.com/en-us/windows/wsl/install-win10
+		https://docs.microsoft.com/en-us/windows/wsl/initialize-distro
+ CygWin - 	https://www.cygwin.com/
+ 
+
+VMD - Linux Version (preferred) -
+	https://www.ks.uiuc.edu/Development/Download/download.cgi?PackageName=VMD
+	
+
+Python 3.7 or later -
+	https://www.anaconda.com/products/individual
+	
+
+MGL Tools - Linux Version -
+	http://mgltools.scripps.edu/downloads
+	
+
+HPC Pack 2016 -
+	https://docs.microsoft.com/en-us/previous-versions/orphan-topics/ws.10/ff919702%28v%3dws.10%29
+	
+
+AutoDock Vina -
+	http://vina.scripps.edu/
+	
+
+Babel -
+	http://openbabel.org/wiki/Main_Page
+	
+
+Molecular Modeling - 
+ Avogadro -	https://avogadro.cc/
+ Maestro | Schrodinger -	https://www.schrodinger.com/maestro
