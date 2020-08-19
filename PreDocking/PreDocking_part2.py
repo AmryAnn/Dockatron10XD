@@ -33,10 +33,13 @@ def rmsd(rmsd_file):
         df = pd.read_csv('rmsd.txt')
         df['picoseconds'] = df.index*25
         df['nanoseconds'] = (df.index*25)/1000
-        rand10 = random.sample(range(len(df.index)+1), k=10)
+        df['Frame'] = range(1, len(df)+1)
+        rand10 = random.sample(range(1, len(df.Frame)+1), k=10)
         #rand20 = random.sample(range(len(df.index)+1), k=20)
-        print(df.head(23))
-        print(rand10)
+        print('\n', df.head(23), '\n')
+        logging.info(f'\n{df}')
+        print('Frames for clustered docking:', rand10)
+        logging.info(f'Frames for clustered docking: {rand10}')
         #print(rand20)
         
         plt.plot(df.nanoseconds, df.rmsd)
@@ -94,7 +97,7 @@ def box_size(minMax_file, extra):
         coordinate value and add buffer distance (extra)"""    
         min_data = pd.read_csv("NewMin.txt", sep='\t')
         max_data = pd.read_csv("NewMax.txt", sep='\t')
-        extra = 25    
+        extra = extra    
         box = open('box_size.txt', 'w')    
         #print(min_data.head(25))
         #print(max_data.head(25))    
@@ -119,7 +122,8 @@ def box_size(minMax_file, extra):
         sizeZ = str(sizeZ)
         sizeBox = sizeX+'\t'+sizeY+'\t'+sizeZ
         box.write(sizeBox)
-        print(sizeBox)    
+        print('Size of docking box:',sizeBox, '\n')   
+        logging.info(f'Size of docking box: {sizeBox}')
         box.close()
         return sizeBox
 
@@ -127,7 +131,7 @@ def box_size(minMax_file, extra):
 """ Write Vina configuration files for each receptor PDB using 'center.dat'
 as input"""
 
-def Vina_configuration_files(center_file):
+def Vina_configuration_files(center_file, num_modes, cpu, exhaustiveness):
     oc = open('center.tsv', 'w')
     LineNumber = 0
     with open(center_file) as center_dat:
@@ -180,9 +184,9 @@ def Vina_configuration_files(center_file):
                 oSize_z = "size_z = %s" %Lineb[2]
                 oSize = oSize_x+"\n"+oSize_y+"\n"+oSize_z+"\n\n"
                 ocd.write(oSize)
-                oModes = "num_modes = %s" %5
-                oCpu = "cpu = %s" %8
-                oExh = "exhaustiveness = %s" %8
+                oModes = "num_modes = %s" %num_modes
+                oCpu = "cpu = %s" %cpu
+                oExh = "exhaustiveness = %s" %exhaustiveness
                 ocd.write(oModes+"\n"+oCpu+"\n"+oExh+"\n")
             LineNumber = LineNumber + 1
         fcd.close()
@@ -208,6 +212,12 @@ if __name__ == '__main__':
                             help='The path to center.dat')
     parser.add_argument('--extra', type=int, required=True, \
                             help='Buffer distance for docking box (angstroms)')
+    parser.add_argument('--num_modes', type=int, required=True, \
+                            help='Number of different poses desired for each ligand-receptor pair.')
+    parser.add_argument('--cpu', type=int, required=True, \
+                            help='Number of cores to use for each docking set.')
+    parser.add_argument('--exhaust', type=int, required=True, \
+                            help='Level of exhaustiveness to use in Vina')
     
     # Add logger to create a log file
     logging.basicConfig(filename="Step2.log", format="%(asctime)s - %(levelname)s - %(message)s",
@@ -230,14 +240,29 @@ if __name__ == '__main__':
     if not CENTER_PATH.exists() or not CENTER_PATH.is_file():
         logging.error(f"center.dat path {RMSD_PATH} is not a valid file or directory")
         exit()
-    
+    EXTRA = args.extra
+    if EXTRA:
+        logging.info(f'{EXTRA} buffer angstroms added to each side of docking box.')
+        print('\n', EXTRA, 'buffer angstroms added to each side of docking box.')
+    MODES = args.num_modes
+    if MODES:
+        logging.info(f'Output will include {MODES} ligand poses per ligand-receptor pair.')
+        print('Output will include', MODES, 'ligand poses per ligand-receptor pair.')
+    CPU = args.cpu
+    if CPU:
+        logging.info(f'Set {CPU} cores per docking calculation.')
+        print(CPU, 'cores per docking calculation.')
+    EXH = args.exhaust
+    if EXH:
+        logging.info(f'Docking ligand to receptor with exhaustiveness of {EXH}.')
+        print('Docking ligand to receptor with exhaustiveness of', EXH)
     # Set logging level
 
     # Function calls
     rmsd(RMSD_PATH)
-    box_size(MINMAX_PATH, extra=25)
-    Vina_configuration_files(CENTER_PATH)
-    logging.info("Finished Dockatron10XD Step 2")
-    print("Finished Dockatron10XD Step 2")
+    box_size(MINMAX_PATH, EXTRA)
+    Vina_configuration_files(CENTER_PATH, MODES, CPU, EXH)
+    logging.info("Finished Dockatron10XD Part 2")
+    print("Finished Dockatron10XD Part 2 \n")
    
 
