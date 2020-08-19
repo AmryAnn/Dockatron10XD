@@ -1,6 +1,6 @@
 How To Dockatron10XD
 
-PreDocking Procedures
+# A. PreDocking Procedures
 
 Part 0
 
@@ -50,18 +50,30 @@ Receptor PDBQT files 	-in /ReceptorPDBQTs/ and in /Docking_Job/ directories
 Ligand PDBQT files		-in /LigandPDBQTs/ and in /Docking_Job/ directories
 
 
-Part 3
+# B. Docking_Job Procedures - With Windows HPC Cluster Manager
 
-1. From the command line, move to /Docking_Job/
-2. Run docking_job.bash to set up the file structure needed to run your docking job.
-3. Move your Docking_Job to the cluster
-4. Set up a parametric sweep docking job (run multiple docking calculations in parallel)
+Part 1
+
+1. Run docking_job.bash to set up the file structure needed to run your docking job.
+2. Upload Docking_Job directory onto cluster
+
+
+Part 2
+1. Set up a parametric sweep docking job (run multiple docking calculations in parallel)
 	https://docs.microsoft.com/en-us/previous-versions/orphan-topics/ws.10/ff919702%28v%3dws.10%29
 
-Expected Output:
-Docking_Job_In 			-contains input files and directories to allow for parametric sweep
-Docking_Job_Out
 
 
+# C. PostDocking Procedurs
 
-Part 4
+Part 1
+1. Download your docking results from the cluster
+
+Part 2
+1. Organize ouput files
+2. Convert ligand pdbqt output into pdb files
+
+Part 3
+1. generate pocket_residus.txt
+2. run assign_binding_sites.py
+3. run Ligand_Sites_Analysis.py	
