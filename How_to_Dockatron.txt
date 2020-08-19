@@ -59,7 +59,7 @@ Part 2
 
 
 
-# C. PostDocking Procedurs
+# C. PostDocking Procedures
 
 Part 1
 1. Download your docking results from the cluster

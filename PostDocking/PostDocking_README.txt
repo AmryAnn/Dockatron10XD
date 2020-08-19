@@ -1,4 +1,4 @@
-PostDocking Procedurs
+PostDocking Procedures
 
 Part 3
 1. Generate pocket_residus.txt
